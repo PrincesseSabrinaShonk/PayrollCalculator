@@ -1,17 +1,43 @@
 package com.pluralsight;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.io.*;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        Employee e = new Employee(1, "brina", 40, 25);
+
+        try{
+            FileReader fileReader = new FileReader("payroll.csv");
+            BufferedReader bufReader = new BufferedReader(fileReader);
+            String input;
+
+            while((input = bufReader.readLine()) != null){
+                Employee emp = makeEmployeeFromCode(input);
+                displayEmployee(emp);
+            }
+
+        }
+        catch(Exception exception){
+            System.out.println("There was an error!");
         }
     }
-}
+
+    public static Employee makeEmployeeFromCode(String code){
+
+        String[] parts = code.split("\\|");
+
+        int employeeId  = Integer.parseInt(parts[0]) ;
+        String name = parts[1];
+        float hoursWorked = Float.parseFloat(parts[2]) ;
+        double payRate = Double.parseDouble(parts[3]) ;
+
+        return new Employee(employeeId, name, hoursWorked, payRate);
+    }
+    public static void displayEmployee(Employee e){
+        System.out.printf("%d %s worked %.1f hours at a rate of $%.2f and earned $%.2f\n",e.getEmployeeId(), e.getName(), e.getHoursWorked(), e.getPayRate(), e.getGrossPay());
+
+
+        }
+    }
+
